@@ -3,6 +3,7 @@ import useCartContext from "../hooks/useCartContext";
 import { fixLength, priceOfCart } from "../utils";
 import { CartActions } from "../contexts/CartContext";
 import { FiMinus } from "react-icons/fi";
+import ConfirmCartClear from "../components/ConfirmCartClear";
 
 const CheckoutPage = () => {
   const { cartState, cartDispatch } = useCartContext();
@@ -14,17 +15,20 @@ const CheckoutPage = () => {
         <section className="col-span-2">
           <div className="flex items-center justify-between">
             <h2 className="mb-4 text-lg font-bold md:text-xl">Order Summary</h2>
-            <button
+            <ConfirmCartClear
+              title="Are you sure?"
+              description="This will delete all the items in your cart. This action is not reversible!"
               onClick={() => {
-                cartDispatch({
-                  type: CartActions.CLEAR_CART,
-                });
+                cartDispatch({ type: CartActions.CLEAR_CART });
               }}
-              disabled={cartState.size == 0}
-              className="px-2 text-red-700 hover:text-red-600 disabled:text-gray-600"
             >
-              Clear All
-            </button>
+              <button
+                disabled={cartState.size == 0}
+                className="px-2 text-red-700 hover:text-red-600 disabled:text-gray-600"
+              >
+                Clear All
+              </button>
+            </ConfirmCartClear>
           </div>
           <div className="p-6 bg-white rounded-lg shadow-md">
             {cartState.size == 0 ? (
@@ -41,7 +45,7 @@ const CheckoutPage = () => {
                 {cartState.items.map((item) => (
                   <div key={item.id} className="grid grid-cols-[60%_15%_25%]">
                     <div className="">
-                      <p className="font-medium">{fixLength(item.name, 32)}</p>
+                      <p className="font-medium">{fixLength(item.name, 42)}</p>
                     </div>
                     <p className="w-full font-medium">{item.quantity}</p>
                     <div className="flex items-start justify-between">
@@ -94,7 +98,7 @@ const CheckoutPage = () => {
               />
             </div>
             <div className="flex gap-2 mb-4">
-              <div className="">
+              <div className="w-full">
                 <label className="block mb-2 text-gray-700">Address</label>
                 <input
                   type="text"
@@ -102,7 +106,7 @@ const CheckoutPage = () => {
                   placeholder="Address"
                 />
               </div>
-              <div className="">
+              <div className="w-full">
                 <label className="block mb-2 text-gray-700">City</label>
                 <input
                   type="text"

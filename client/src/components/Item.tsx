@@ -3,7 +3,7 @@ import React from "react";
 import { TiShoppingCart } from "react-icons/ti";
 
 import { fixLength } from "../utils";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useCartContext from "../hooks/useCartContext";
 import { CartActions } from "../contexts/CartContext";
 
@@ -13,20 +13,12 @@ interface ItemProps {
   title: string;
   price: string;
   quantity: number;
-  link?: string;
   collection?: boolean;
 }
 
-const Item = ({
-  img,
-  title,
-  price,
-  link,
-  collection,
-  id,
-  quantity,
-}: ItemProps) => {
+const Item = ({ img, title, price, collection, id, quantity }: ItemProps) => {
   const { cartDispatch } = useCartContext();
+  const navigate = useNavigate();
 
   const addToCart = (id, name, price, quantity, bought) => {
     cartDispatch({
@@ -42,9 +34,9 @@ const Item = ({
   };
 
   return (
-    <a
-      href={link}
-      className="flex flex-col w-full h-full max-w-xs gap-2 overflow-hidden bg-white rounded-lg shadow-card"
+    <div
+      onClick={() => navigate(`/product/${id}`)}
+      className="flex flex-col w-full h-full max-w-xs gap-2 overflow-hidden bg-white rounded-lg cursor-pointer shadow-card"
     >
       <div className={`${collection ? "h-56" : "h-40"}`}>
         <img
@@ -58,17 +50,18 @@ const Item = ({
         <div className="flex items-center justify-between">
           <p className="font-bold">$ {price}</p>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               addToCart(id, title, price, quantity, false);
             }}
-            className="flex gap-1 px-3 py-2 text-sm text-white bg-orange-500 rounded-full"
+            className="flex gap-1 px-3 py-2 text-sm text-white bg-orange-500 rounded-full hover:scale-110"
           >
             <TiShoppingCart size={20} />
             <span>add</span>
           </button>
         </div>
       </div>
-    </a>
+    </div>
   );
 };
 

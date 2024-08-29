@@ -39,7 +39,7 @@ const cartReducer = (cartState: cartState, action: any) => {
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
             ),
-            size: cartState.size + 1,
+            size: cartState.size + (action.payload.quantity || 1),
           }
         : {
             items: [
@@ -52,7 +52,7 @@ const cartReducer = (cartState: cartState, action: any) => {
                 bought: false,
               },
             ],
-            size: cartState.size + 1,
+            size: cartState.size + (action.payload.quantity || 1),
           };
     case CartActions.REMOVE_ITEM:
       if (exists && action.payload.quantity > 1) {
