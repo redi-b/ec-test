@@ -32,6 +32,8 @@ const cartReducer = (cartState: cartState, action: any) => {
 
   switch (action.type) {
     case CartActions.ADD_ITEM:
+      console.log(typeof action.payload.id);
+      console.log(action.payload.id);
       return exists
         ? {
             items: cartState.items.map((item) =>

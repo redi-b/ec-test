@@ -5,7 +5,7 @@ import useCartContext from "../hooks/useCartContext";
 import { CartActions } from "../contexts/CartContext";
 
 const ProductDetails = () => {
-  const { id } = useParams();
+  let { id } = useParams();
   const { cartDispatch } = useCartContext();
   const [data, setData] = useState({});
   const [dataLoading, setDataLoading] = useState(true);
@@ -59,12 +59,17 @@ const ProductDetails = () => {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() =>
+                onClick={() => {
                   cartDispatch({
                     type: CartActions.ADD_ITEM,
-                    payload: { ...data, quantity, name: data.title },
-                  })
-                }
+                    payload: {
+                      ...data,
+                      quantity,
+                      name: data.title,
+                      id: id,
+                    },
+                  });
+                }}
                 className="px-4 py-2 mt-4 text-sm text-white bg-orange-500 rounded-full"
               >
                 Add to Cart
